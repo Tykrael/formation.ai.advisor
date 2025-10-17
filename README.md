@@ -11,6 +11,7 @@ Participants : Virgile, Vladimir, Remi, Vincent
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
+<!-- 
 //- [Configuration](#configuration)
 //- [Usage](#usage)
 //- [Development](#development)
@@ -18,7 +19,7 @@ Participants : Virgile, Vladimir, Remi, Vincent
 //- [License](#license)
 //- [Contact](#contact)
 // - [Acknowledgements](#acknowledgements)
-
+ -->
 ## About
 
 Screencaps + files for the demo
