@@ -1,0 +1,602 @@
+[
+  {
+    "nom_complet": "Antoine Leclerc",
+    "profession": "Directeur d'Agence",
+    "seniorite": "Expert",
+    "competences": {
+      "Strategie_Bancaire": 5,
+      "Gestion_Budgetaire": 4,
+      "Pilotage_Performance": 5,
+      "Gestion_RH": 4,
+      "Conformite_AMF_ACPR": 5
+    }
+  },
+  {
+    "nom_complet": "Valérie Moreau",
+    "profession": "Directrice Adjointe",
+    "seniorite": "Expert",
+    "competences": {
+      "Pilotage_Performance": 4,
+      "Service_Client": 5,
+      "Vente_Produits_Bancaires": 5,
+      "Gestion_des_Credits": 4,
+      "Reclamation_Litiges": 4
+    }
+  },
+  {
+    "nom_complet": "Thomas Dubois",
+    "profession": "Responsable Conformité",
+    "seniorite": "Expert",
+    "competences": {
+      "Conformite_AMF_ACPR": 5,
+      "Evaluation_Risque": 5,
+      "Audit_Controle_Interne": 5,
+      "Reglementation_KYC_AML": 5,
+      "Analyse_Financiere": 4
+    }
+  },
+  {
+    "nom_complet": "Camille Faure",
+    "profession": "Conseillère en Patrimoine",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_Patrimoine": 5,
+      "Fiscalite_Particulier": 5,
+      "Vente_Produits_Bancaires": 5,
+      "Gestion_Assurances": 4,
+      "Gestion_de_Portefeuille": 5
+    }
+  },
+  {
+    "nom_complet": "Frédéric Lefevre",
+    "profession": "Conseiller Clientèle Pro",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 4,
+      "Vente_Produits_Bancaires": 4,
+      "Prospection_Commerciale": 4,
+      "Analyse_Credit": 5,
+      "Gestion_des_Credits": 3
+    }
+  },
+  {
+    "nom_complet": "Sophie Roussel",
+    "profession": "Conseillère Clientèle Particulier",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 4,
+      "Vente_Produits_Bancaires": 3,
+      "Maitrise_Outils_CRM": 4,
+      "Gestion_Assurances": 3,
+      "Communication_Client": 4
+    }
+  },
+  {
+    "nom_complet": "Paul Henry",
+    "profession": "Conseiller en Patrimoine",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_de_Portefeuille": 5,
+      "Fiscalite_Particulier": 5,
+      "Gestion_Patrimoine": 5,
+      "Analyse_Financiere": 5,
+      "Conformite_AMF_ACPR": 4
+    }
+  },
+  {
+    "nom_complet": "Chloé Richard",
+    "profession": "Conseillère Clientèle Senior",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 5,
+      "Prospection_Commerciale": 5,
+      "Vente_Produits_Bancaires": 5,
+      "Reclamation_Litiges": 4,
+      "Maitrise_Outils_CRM": 4
+    }
+  },
+  {
+    "nom_complet": "Éric Meyer",
+    "profession": "Analyste Risque Crédit",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Analyse_Credit": 5,
+      "Evaluation_Risque": 5,
+      "Analyse_Financiere": 4,
+      "Reglementation_KYC_AML": 3,
+      "Gestion_des_Credits": 4
+    }
+  },
+  {
+    "nom_complet": "Juliette Blanc",
+    "profession": "Chargée de Clientèle Junior",
+    "seniorite": "Junior",
+    "competences": {
+      "Service_Client": 3,
+      "Vente_Produits_Bancaires": 2,
+      "Maitrise_Outils_CRM": 3,
+      "Back_Office_Comptes": 2,
+      "Communication_Client": 3
+    }
+  },
+  {
+    "nom_complet": "Marc Dubois",
+    "profession": "Opérateur Back-Office",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Back_Office_Comptes": 5,
+      "Comptabilite_Bancaire": 4,
+      "Traitement_Successions": 4,
+      "Reglementation_KYC_AML": 5,
+      "Gestion_Tresorerie": 3
+    }
+  },
+  {
+    "nom_complet": "Inès Lopez",
+    "profession": "Gestionnaire RH",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_RH": 5,
+      "Droit_Social": 5,
+      "Paie_Admin_Personnel": 4,
+      "Gestion_Budgetaire": 3,
+      "Pilotage_Performance": 4
+    }
+  },
+  {
+    "nom_complet": "Kevin Chen",
+    "profession": "Data Analyst (Risques)",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Analyse_Donnees_BI": 5,
+      "Evaluation_Risque": 4,
+      "Analyse_Credit": 3,
+      "Maitrise_Outils_CRM": 4,
+      "Gestion_Projet_IT_Agile": 3
+    }
+  },
+  {
+    "nom_complet": "Laura Sanchez",
+    "profession": "Responsable Agence Adjointe",
+    "seniorite": "Expert",
+    "competences": {
+      "Strategie_Bancaire": 4,
+      "Gestion_Budgetaire": 4,
+      "Pilotage_Performance": 5,
+      "Gestion_RH": 3,
+      "Vente_Produits_Bancaires": 5
+    }
+  },
+  {
+    "nom_complet": "Gabriel Moreau",
+    "profession": "Conseiller Clientèle Pro",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Vente_Produits_Bancaires": 4,
+      "Prospection_Commerciale": 5,
+      "Analyse_Credit": 4,
+      "Analyse_Financiere": 3,
+      "Gestion_des_Credits": 4
+    }
+  },
+  {
+    "nom_complet": "Alice Fournier",
+    "profession": "Conseillère en Patrimoine",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Gestion_Patrimoine": 4,
+      "Fiscalite_Particulier": 4,
+      "Gestion_de_Portefeuille": 3,
+      "Gestion_Assurances": 5,
+      "Conformite_AMF_ACPR": 3
+    }
+  },
+  {
+    "nom_complet": "Théo Girard",
+    "profession": "Auditeur Interne",
+    "seniorite": "Expert",
+    "competences": {
+      "Audit_Controle_Interne": 5,
+      "Evaluation_Risque": 5,
+      "Conformite_AMF_ACPR": 5,
+      "Reglementation_KYC_AML": 5,
+      "Comptabilite_Bancaire": 4
+    }
+  },
+  {
+    "nom_complet": "Manon Petit",
+    "profession": "Conseillère Clientèle Particulier",
+    "seniorite": "Junior",
+    "competences": {
+      "Service_Client": 3,
+      "Vente_Produits_Bancaires": 3,
+      "Prospection_Commerciale": 2,
+      "Maitrise_Outils_CRM": 3,
+      "Communication_Client": 3
+    }
+  },
+  {
+    "nom_complet": "Lucas Leroy",
+    "profession": "Développeur Core Banking",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Dev_Applicatif": 5,
+      "Gestion_Projet_IT_Agile": 4,
+      "Maintenance_CoreBanking": 5,
+      "Cybersécurité": 3,
+      "Support_IT_N1": 2
+    }
+  },
+  {
+    "nom_complet": "Sonia Dupont",
+    "profession": "Chef de Projet Digital",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_Projet_IT_Agile": 5,
+      "Strategie_Bancaire": 4,
+      "Maitrise_Outils_CRM": 5,
+      "Analyse_Donnees_BI": 4,
+      "Pilotage_Performance": 4
+    }
+  },
+  {
+    "nom_complet": "Adrien Gauthier",
+    "profession": "Chargé d'Affaires Entreprises",
+    "seniorite": "Expert",
+    "competences": {
+      "Prospection_Commerciale": 5,
+      "Vente_Produits_Bancaires": 5,
+      "Analyse_Credit": 5,
+      "Gestion_des_Credits": 5,
+      "Analyse_Financiere": 4
+    }
+  },
+  {
+    "nom_complet": "Fanny Bernard",
+    "profession": "Opérateur Middle-Office",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Back_Office_Comptes": 4,
+      "Back_Office_Credits": 5,
+      "Gestion_Tresorerie": 4,
+      "Reglementation_KYC_AML": 3,
+      "Evaluation_Risque": 3
+    }
+  },
+  {
+    "nom_complet": "Hugo Vidal",
+    "profession": "Juriste en Droit Bancaire",
+    "seniorite": "Expert",
+    "competences": {
+      "Droit_Social": 5,
+      "Conformite_AMF_ACPR": 5,
+      "Reglementation_KYC_AML": 5,
+      "Reclamation_Litiges": 4,
+      "Audit_Controle_Interne": 4
+    }
+  },
+  {
+    "nom_complet": "Elsa Martin",
+    "profession": "Conseillère Clientèle Particulier",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 4,
+      "Vente_Produits_Bancaires": 4,
+      "Prospection_Commerciale": 3,
+      "Gestion_Assurances": 4,
+      "Reclamation_Litiges": 3
+    }
+  },
+  {
+    "nom_complet": "Yann Dubois",
+    "profession": "Administrateur Réseau",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Admin_Reseau_Securite": 5,
+      "Cybersécurité": 4,
+      "Support_IT_N1": 5,
+      "Maintenance_CoreBanking": 3,
+      "Gestion_Projet_IT_Agile": 3
+    }
+  },
+  {
+    "nom_complet": "Clara Leroy",
+    "profession": "Gestionnaire de Portefeuille",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_de_Portefeuille": 5,
+      "Analyse_Financiere": 5,
+      "Fiscalite_Particulier": 4,
+      "Gestion_Patrimoine": 5,
+      "Strategie_Bancaire": 4
+    }
+  },
+  {
+    "nom_complet": "Maxime Roussel",
+    "profession": "Conseiller Clientèle Junior",
+    "seniorite": "Junior",
+    "competences": {
+      "Service_Client": 3,
+      "Vente_Produits_Bancaires": 2,
+      "Maitrise_Outils_CRM": 3,
+      "Communication_Client": 3,
+      "Prospection_Commerciale": 2
+    }
+  },
+  {
+    "nom_complet": "Lina Morel",
+    "profession": "Comptable Bancaire",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Comptabilite_Bancaire": 5,
+      "Gestion_Tresorerie": 4,
+      "Gestion_Budgetaire": 4,
+      "Audit_Controle_Interne": 3,
+      "Back_Office_Comptes": 4
+    }
+  },
+  {
+    "nom_complet": "Vincent Petit",
+    "profession": "Spécialiste Cybersécurité",
+    "seniorite": "Expert",
+    "competences": {
+      "Cybersécurité": 5,
+      "Admin_Reseau_Securite": 5,
+      "Dev_Applicatif": 4,
+      "Evaluation_Risque": 5,
+      "Audit_Controle_Interne": 4
+    }
+  },
+  {
+    "nom_complet": "Alice Dupont",
+    "profession": "Conseillère Clientèle Senior",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 5,
+      "Vente_Produits_Bancaires": 4,
+      "Prospection_Commerciale": 5,
+      "Maitrise_Outils_CRM": 4,
+      "Gestion_Assurances": 4
+    }
+  },
+  {
+    "nom_complet": "Karim Zaidi",
+    "profession": "Chargé de Clientèle Junior",
+    "seniorite": "Junior",
+    "competences": {
+      "Service_Client": 2,
+      "Vente_Produits_Bancaires": 1,
+      "Maitrise_Outils_CRM": 2,
+      "Back_Office_Comptes": 1,
+      "Communication_Client": 2
+    }
+  },
+  {
+    "nom_complet": "Julia Lefevre",
+    "profession": "Responsable Vente (Régional)",
+    "seniorite": "Expert",
+    "competences": {
+      "Pilotage_Performance": 5,
+      "Strategie_Bancaire": 5,
+      "Gestion_RH": 4,
+      "Vente_Produits_Bancaires": 5,
+      "Prospection_Commerciale": 5
+    }
+  },
+  {
+    "nom_complet": "David Roy",
+    "profession": "Gestionnaire des Successions",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Traitement_Successions": 5,
+      "Fiscalite_Particulier": 4,
+      "Reglementation_KYC_AML": 3,
+      "Comptabilite_Bancaire": 3,
+      "Back_Office_Comptes": 4
+    }
+  },
+  {
+    "nom_complet": "Emma Garnier",
+    "profession": "Conseillère Clientèle Pro",
+    "seniorite": "Expert",
+    "competences": {
+      "Vente_Produits_Bancaires": 5,
+      "Analyse_Credit": 5,
+      "Analyse_Financiere": 5,
+      "Prospection_Commerciale": 4,
+      "Gestion_des_Credits": 5
+    }
+  },
+  {
+    "nom_complet": "Rémi Simon",
+    "profession": "Conseiller en Patrimoine",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Gestion_Patrimoine": 4,
+      "Fiscalite_Particulier": 4,
+      "Gestion_de_Portefeuille": 3,
+      "Vente_Produits_Bancaires": 4,
+      "Analyse_Financiere": 3
+    }
+  },
+  {
+    "nom_complet": "Nathalie Lambert",
+    "profession": "Opérateur Back-Office (Crédits)",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Back_Office_Credits": 5,
+      "Gestion_des_Credits": 4,
+      "Analyse_Credit": 3,
+      "Comptabilite_Bancaire": 3,
+      "Reglementation_KYC_AML": 4
+    }
+  },
+  {
+    "nom_complet": "Olivier Roux",
+    "profession": "Analyste Data (Marketing)",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Analyse_Donnees_BI": 5,
+      "Maitrise_Outils_CRM": 4,
+      "Vente_Produits_Bancaires": 3,
+      "Pilotage_Performance": 4,
+      "Gestion_Projet_IT_Agile": 3
+    }
+  },
+  {
+    "nom_complet": "Mélanie Bonnet",
+    "profession": "Conseillère Clientèle Particulier",
+    "seniorite": "Junior",
+    "competences": {
+      "Service_Client": 3,
+      "Vente_Produits_Bancaires": 2,
+      "Gestion_Assurances": 1,
+      "Communication_Client": 3,
+      "Reclamation_Litiges": 2
+    }
+  },
+  {
+    "nom_complet": "Thibault Lefort",
+    "profession": "Responsable IT Agence",
+    "seniorite": "Expert",
+    "competences": {
+      "Admin_Reseau_Securite": 5,
+      "Support_IT_N1": 5,
+      "Gestion_Projet_IT_Agile": 5,
+      "Maintenance_CoreBanking": 4,
+      "Cybersécurité": 4
+    }
+  },
+  {
+    "nom_complet": "Amélie Dubois",
+    "profession": "Conseillère en Patrimoine",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Gestion_Patrimoine": 4,
+      "Fiscalite_Particulier": 4,
+      "Gestion_de_Portefeuille": 3,
+      "Vente_Produits_Bancaires": 4,
+      "Conformite_AMF_ACPR": 3
+    }
+  },
+  {
+    "nom_complet": "Julien Morel",
+    "profession": "Chargé de Clientèle (Marché Pro)",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Prospection_Commerciale": 4,
+      "Vente_Produits_Bancaires": 4,
+      "Analyse_Credit": 4,
+      "Service_Client": 3,
+      "Gestion_des_Credits": 4
+    }
+  },
+  {
+    "nom_complet": "Morgane Basset",
+    "profession": "Auditeur Interne",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Audit_Controle_Interne": 4,
+      "Evaluation_Risque": 4,
+      "Reglementation_KYC_AML": 4,
+      "Conformite_AMF_ACPR": 3,
+      "Comptabilite_Bancaire": 3
+    }
+  },
+  {
+    "nom_complet": "Victor Garcia",
+    "profession": "Développeur Front-Office",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Dev_Applicatif": 5,
+      "Gestion_Projet_IT_Agile": 4,
+      "Maitrise_Outils_CRM": 3,
+      "Support_IT_N1": 3,
+      "Maintenance_CoreBanking": 2
+    }
+  },
+  {
+    "nom_complet": "Sabine Lefort",
+    "profession": "Assistante de Direction",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_RH": 4,
+      "Gestion_Budgetaire": 3,
+      "Pilotage_Performance": 3,
+      "Communication_Client": 5,
+      "Droit_Social": 3
+    }
+  },
+  {
+    "nom_complet": "Anthony Ravier",
+    "profession": "Opérateur Back-Office (Comptes)",
+    "seniorite": "Junior",
+    "competences": {
+      "Back_Office_Comptes": 3,
+      "Gestion_Tresorerie": 2,
+      "Reglementation_KYC_AML": 2,
+      "Comptabilite_Bancaire": 1,
+      "Support_IT_N1": 1
+    }
+  },
+  {
+    "nom_complet": "Émilie Thomas",
+    "profession": "Conseillère Clientèle Senior",
+    "seniorite": "Expert",
+    "competences": {
+      "Service_Client": 5,
+      "Vente_Produits_Bancaires": 5,
+      "Gestion_Patrimoine": 3,
+      "Gestion_Assurances": 5,
+      "Reclamation_Litiges": 4
+    }
+  },
+  {
+    "nom_complet": "Louis Dubois",
+    "profession": "Contrôleur de Gestion",
+    "seniorite": "Expert",
+    "competences": {
+      "Gestion_Budgetaire": 5,
+      "Pilotage_Performance": 5,
+      "Analyse_Financiere": 5,
+      "Comptabilite_Bancaire": 4,
+      "Analyse_Donnees_BI": 4
+    }
+  },
+  {
+    "nom_complet": "Clémentine Perrin",
+    "profession": "Conseillère Clientèle Particulier",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Service_Client": 4,
+      "Vente_Produits_Bancaires": 3,
+      "Prospection_Commerciale": 3,
+      "Maitrise_Outils_CRM": 4,
+      "Communication_Client": 4
+    }
+  },
+  {
+    "nom_complet": "Romain Moreau",
+    "profession": "Analyste Risque de Marché",
+    "seniorite": "Expert",
+    "competences": {
+      "Evaluation_Risque": 5,
+      "Analyse_Financiere": 5,
+      "Gestion_de_Portefeuille": 4,
+      "Strategie_Bancaire": 4,
+      "Analyse_Donnees_BI": 5
+    }
+  },
+  {
+    "nom_complet": "Justine Michel",
+    "profession": "Chargée de Recrutement RH",
+    "seniorite": "Confirmé",
+    "competences": {
+      "Gestion_RH": 4,
+      "Droit_Social": 3,
+      "Paie_Admin_Personnel": 2,
+      "Gestion_Projet_IT_Agile": 3,
+      "Communication_Client": 4
+    }
+  }
+]

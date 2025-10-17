@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrice de Compétences - Banque de Détail (Material UI Style)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&display=swap" rel="stylesheet">
+    <style>
+        /* Couleurs et styles inspirés de Material Design */
+        :root {
+            --md-primary-color: #007bff; /* Bleu Primaire */
+            --md-secondary-color: #424242; /* Texte principal */
+            --md-surface-color: #FFFFFF;
+            --md-divider-color: #E0E0E0;
+            --md-hover-row-color: #E3F2FD; /* Bleu très clair pour ligne */
+            --md-hover-col-color: #BBDEFB; /* Bleu clair pour colonne */
+            --md-stats-color: #F5F5F5; /* Fond pour les lignes de stats */
+            --md-expert-score: #4CAF50; /* Vert pour score 5 */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F5F5F5;
+            padding: 20px;
+            color: var(--md-secondary-color);
+        }
+
+        h1 {
+            color: var(--md-primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Conteneur et Tableau */
+        .table-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            background-color: var(--md-surface-color);
+            border-radius: 4px;
+        }
+
+        .persona-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            /* Le layout fixe permet de mieux contrôler la largeur des colonnes, mais auto est préférable pour les noms longs */
+            /* table-layout: fixed; */ 
+        }
+
+        /* En-tête */
+        .persona-table thead th {
+            background-color: var(--md-primary-color);
+            color: var(--md-surface-color);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Corps */
+        .persona-table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--md-divider-color);
+            white-space: nowrap;
+        }
+
+        /* Effet de Hôver sur la ligne (géré par CSS) */
+        .persona-table tbody tr:not(.stats-row):hover {
+            background-color: var(--md-hover-row-color);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Effet de Hôver sur la colonne (géré par JS) */
+        .hover-col {
+            background-color: var(--md-hover-col-color) !important;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Ajustement du TH pour le hover de colonne */
+        .persona-table thead th.hover-col {
+             background-color: var(--md-hover-col-color) !important; 
+             color: var(--md-secondary-color) !important;
+        }
+
+        /* Style spécifique aux scores */
+        .competence-score {
+            font-weight: bold;
+            text-align: center;
+        }
+        .score-5 { color: var(--md-expert-score); } 
+        .score-4 { color: orange; }
+        .score-3 { color: #FFC107; }
+        .score-2 { color: #FF9800; }
+        .score-1 { color: #F44336; }
+
+        /* Styles pour les lignes de statistiques (TFOOT) */
+        .persona-table tfoot {
+            font-weight: 500;
+            background-color: var(--md-stats-color);
+            border-top: 2px solid var(--md-primary-color);
+        }
+
+        .persona-table tfoot td {
+            padding: 10px 15px;
+            border-top: 1px solid var(--md-divider-color);
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .persona-table tfoot td:first-child {
+            text-align: left;
+            font-weight: bold;
+            background-color: #E8EAF6; /* Lighter blue for label */
+            color: var(--md-primary-color);
+        }
+
+        .persona-table tfoot tr:last-child td {
+             border-bottom: none;
+        }
+        
+        /* Stats spécifiques */
+        .stat-expert-avg { color: var(--md-expert-score); }
+        .stat-total { font-size: 1.1em; }
+    </style>
+</head>
+<body>
+
+    <h1>Matrice de Compétences des Personas</h1>
+
+    <div class="table-container">
+        <table class="persona-table" id="personaTable">
+            <thead>
+                <tr id="tableHeadRow">
+                    <th style="min-width: 150px;">Nom Complet</th>
+                    <th style="min-width: 150px;">Profession</th>
+                    <th style="min-width: 80px;">Séniorité</th>
+                    </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+            <tfoot id="tableFoot">
+                </tfoot>
+        </table>
+    </div>
+
+    <script>
+        // Fonction principale pour charger les données et construire le tableau
+        async function loadPersonasAndBuildTable() {
+            const tableBody = document.getElementById('tableBody');
+            const tableHeadRow = document.getElementById('tableHeadRow');
+            const tableFoot = document.getElementById('tableFoot');
+            let personasData;
+
+            // 1. Chargement du fichier JSON externe
+            try {
+                const response = await fetch('./personas.json');
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                personasData = await response.json();
+            } catch (error) {
+                console.error("Erreur lors du chargement du fichier personas.json:", error);
+                tableBody.innerHTML = `<tr><td colspan="100">Erreur de chargement des données. Vérifiez que 'personas.json' est présent à la racine.</td></tr>`;
+                return;
+            }
+
+            // --- Logique de Pré-traitement des données ---
+            let allCompetences = new Set();
+            // Initialisation des totaux de scores et de compteurs d'experts
+            let competenceTotals = {};
+            let competenceExperts = {}; 
+
+            personasData.forEach(persona => {
+                Object.keys(persona.competences).forEach(comp => {
+                    allCompetences.add(comp);
+                    const score = persona.competences[comp] || 0;
+                    
+                    // Score total
+                    competenceTotals[comp] = (competenceTotals[comp] || 0) + score;
+                    
+                    // Compteur d'experts (score >= 4 pour être significatif)
+                    if (score) {
+                        competenceExperts[comp] = (competenceExperts[comp] || 0) + 1;
+                    } else {
+                        competenceExperts[comp] = (competenceExperts[comp] || 0); // Assurer l'initialisation
+                    }
+                });
+            });
+            
+            const competencesList = Array.from(allCompetences).sort(); // Tri des compétences pour un affichage stable
+
+            // --- 2. Construction de l'En-tête (TH) ---
+            competencesList.forEach(comp => {
+                const th = document.createElement('th');
+                th.textContent = comp.replace(/_/g, ' '); // Remplacer les underscores pour l'affichage
+                th.dataset.competenceName = comp;
+                th.style.minWidth = '100px';
+                tableHeadRow.appendChild(th);
+            });
+
+            // --- 3. Construction du Corps (Données Personas) ---
+            personasData.forEach(persona => {
+                const tr = document.createElement('tr');
+
+                // Colonnes de caractéristiques
+                tr.innerHTML += `<td>${persona.nom_complet}</td>`;
+                tr.innerHTML += `<td>${persona.profession}</td>`;
+                tr.innerHTML += `<td>${persona.seniorite}</td>`;
+
+                // Colonnes de compétences
+                competencesList.forEach(compName => {
+                    const score = persona.competences[compName] || 0; 
+                    const td = document.createElement('td');
+
+                    if (score > 0) {
+                        td.className = `competence-score score-${score}`;
+                        td.textContent = score;
+                    } else {
+                        td.textContent = '-'; 
+                        td.style.color = '#ccc';
+                    }
+
+                    td.dataset.competenceName = compName;
+                    tr.appendChild(td);
+                });
+
+                tableBody.appendChild(tr);
+            });
+
+            // --- 4. Construction du Pied de Tableau (Statistiques) ---
+
+            // A) Ligne "Score total"
+            const trTotal = document.createElement('tr');
+            trTotal.className = 'stats-row';
+            trTotal.innerHTML = `<td colspan="3">Score total (Somme des niveaux)</td>`;
+            competencesList.forEach(comp => {
+                const td = document.createElement('td');
+                td.className = 'stat-total';
+                td.textContent = competenceTotals[comp] || 0;
+                trTotal.appendChild(td);
+            });
+            tableFoot.appendChild(trTotal);
+            
+            // B) Ligne "Experts"
+            const trExperts = document.createElement('tr');
+            trExperts.className = 'stats-row';
+            trExperts.innerHTML = `<td colspan="3">Experts (Score ≥ 4)</td>`;
+            competencesList.forEach(comp => {
+                const td = document.createElement('td');
+                td.className = 'stat-expert-count';
+                td.textContent = competenceExperts[comp] || 0;
+                trExperts.appendChild(td);
+            });
+            tableFoot.appendChild(trExperts);
+
+            // C) Ligne "Expertise moyenne"
+            const trAvg = document.createElement('tr');
+            trAvg.className = 'stats-row';
+            trAvg.innerHTML = `<td colspan="3">Expertise moyenne (Score total / Nb Experts)</td>`;
+            competencesList.forEach(comp => {
+                const total = competenceTotals[comp] || 0;
+                const expertsCount = competenceExperts[comp] || 0;
+                let average = 0;
+                
+                if (expertsCount > 0) {
+                    average = (total / expertsCount).toFixed(2);
+                } else {
+                    average = 'N/A';
+                }
+
+                const td = document.createElement('td');
+                td.className = 'stat-expert-avg';
+                td.textContent = average;
+                trAvg.appendChild(td);
+            });
+            tableFoot.appendChild(trAvg);
+
+
+            // --- 5. Implémentation de l'effet de Hôver sur la colonne ---
+            
+            const table = document.getElementById('personaTable');
+
+            // Fonction pour appliquer le style de colonne
+            function highlightColumn(columnIndex, isHover) {
+                const action = isHover ? 'add' : 'remove';
+                // Cibler toutes les lignes (y compris thead et tfoot)
+                const allRows = Array.from(table.querySelectorAll('tr'));
+
+                allRows.forEach(row => {
+                    const cells = Array.from(row.children);
+                    if (cells.length > columnIndex) {
+                        cells[columnIndex].classList[action]('hover-col');
+                    }
+                });
+            }
+
+            // Gestion des événements de survol
+            table.addEventListener('mouseover', (event) => {
+                // Trouver la cellule survolée (td ou th)
+                const targetCell = event.target.closest('td, th');
+                if (!targetCell) return;
+
+                // Trouver l'index de la colonne
+                const row = targetCell.parentNode;
+                const columnIndex = Array.from(row.children).indexOf(targetCell);
+
+                // Si l'index est valide et la colonne est une colonne de compétence (index > 2)
+                if (columnIndex !== -1 && columnIndex >= 3) {
+                    highlightColumn(columnIndex, true);
+                }
+            });
+
+            table.addEventListener('mouseout', (event) => {
+                // Le mouseout doit être retiré de toutes les cellules de la colonne pour que l'effet ne persiste pas
+                 table.querySelectorAll('.hover-col').forEach(cell => {
+                     cell.classList.remove('hover-col');
+                 });
+            });
+
+        }
+
+        // Lancement de la construction du tableau
+        loadPersonasAndBuildTable();
+    </script>
+</body>
+</html>

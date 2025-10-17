@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau des Personas - Analyse de Compétences (Material Design)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&display=swap" rel="stylesheet">
+    <style>
+        /* Couleurs et esthétique Material Design */
+        :root {
+            --md-primary-color: #3F51B5; /* Indigo */
+            --md-secondary-color: #212121; /* Gris foncé */
+            --md-surface-color: #FFFFFF;
+            --md-divider-color: #E0E0E0;
+            --md-hover-row-color: #E8EAF6; /* Indigo très clair (Ligne) */
+            --md-hover-col-color: #C5CAE9; /* Indigo clair (Colonne) */
+            --md-shadow-elevation-1: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F5F5F5;
+            padding: 20px;
+            color: var(--md-secondary-color);
+        }
+
+        h1 {
+            color: var(--md-primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Conteneur et Tableau */
+        .table-container {
+            max-width: 95%;
+            margin: 0 auto;
+            overflow-x: auto;
+            box-shadow: var(--md-shadow-elevation-1);
+            background-color: var(--md-surface-color);
+            border-radius: 4px;
+        }
+
+        .persona-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            table-layout: fixed; /* Important pour l'effet de colonne JS */
+        }
+
+        /* En-tête (Material Style) */
+        .persona-table thead th {
+            background-color: var(--md-primary-color);
+            color: var(--md-surface-color);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+            cursor: default;
+            user-select: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Corps du tableau */
+        .persona-table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--md-divider-color);
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .persona-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Pied de tableau (Statistiques) */
+        .persona-table tfoot th,
+        .persona-table tfoot td {
+            padding: 12px 15px;
+            background-color: #CFD8DC; /* Gris léger pour le pied */
+            border-top: 2px solid #90A4AE;
+            font-weight: 500;
+            color: var(--md-secondary-color);
+        }
+
+        .persona-table tfoot tr.average-row td {
+            font-weight: bold;
+            color: var(--md-primary-color);
+        }
+        
+        /* Effet de Hôver sur la ligne complète */
+        .persona-table tbody tr:hover {
+            background-color: var(--md-hover-row-color);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Effet de Hôver sur la colonne (appliqué par JS) */
+        .hover-col {
+            background-color: var(--md-hover-col-color) !important; 
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Ajustement du TH pour le hover de colonne (couleur du texte) */
+        .persona-table thead th.hover-col {
+             background-color: var(--md-hover-col-color) !important; 
+             color: var(--md-secondary-color) !important;
+        }
+
+        /* Scores des compétences */
+        .competence-score {
+            font-weight: bold;
+            text-align: center;
+        }
+        .score-5 { color: #4CAF50; } /* Vert - Expert */
+        .score-4 { color: #8BC34A; }
+        .score-3 { color: #FFC107; } /* Jaune - Confirmé */
+        .score-2 { color: #FF9800; }
+        .score-1 { color: #F44336; } /* Rouge - Junior */
+
+    </style>
+</head>
+<body>
+
+    <h1>Analyse des Compétences des Personas 📊</h1>
+
+    <div class="table-container">
+        <table class="persona-table" id="personaTable">
+            <thead>
+                <tr id="tableHeaderRow">
+                    <th>Nom Complet</th>
+                    <th>Profession</th>
+                    <th>Séniorité</th>
+                    </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+            <tfoot id="tableFooter">
+                </tfoot>
+        </table>
+    </div>
+    
+    <div id="error-message" style="color: red; text-align: center; margin-top: 20px; display: none;">
+        Erreur: Impossible de charger les données. Assurez-vous que le fichier "personas.json" existe dans le même répertoire.
+    </div>
+
+    <script>
+        const API_URL = 'personas.json';
+        const tableBody = document.getElementById('tableBody');
+        const tableHeaderRow = document.getElementById('tableHeaderRow');
+        const tableFooter = document.getElementById('tableFooter');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Liste des en-têtes fixes au début du tableau
+        const fixedHeaders = ["Nom Complet", "Profession", "Séniorité"];
+
+        /**
+         * Met en forme le nom de la compétence (ex: Strategie_Bancaire -> Stratégie Bancaire)
+         * @param {string} competenceKey 
+         * @returns {string}
+         */
+        function formatCompetenceName(competenceKey) {
+            // Remplace les underscores par des espaces, puis met la première lettre de chaque mot en majuscule
+            return competenceKey.replace(/_/g, ' ')
+                                .replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        /**
+         * Fonction principale pour charger les données et construire le tableau.
+         */
+        async function buildTable() {
+            let data;
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                data = await response.json();
+            } catch (error) {
+                console.error("Erreur de chargement du JSON:", error);
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // 1. Déterminer toutes les compétences uniques et calculer les stats
+            const competenceStats = {};
+            const allCompetences = new Set();
+
+            data.forEach(persona => {
+                Object.keys(persona.competences).forEach(comp => {
+                    allCompetences.add(comp);
+                    const score = persona.competences[comp];
+                    
+                    if (!competenceStats[comp]) {
+                        competenceStats[comp] = { totalScore: 0, count: 0 };
+                    }
+                    // Le score doit exister pour que la personne soit comptée comme "Expert" (possédant la compétence)
+                    if (score > 0) {
+                        competenceStats[comp].totalScore += score;
+                        competenceStats[comp].count += 1;
+                    }
+                });
+            });
+
+            const sortedCompetences = Array.from(allCompetences).sort();
+            
+            // 2. Générer l'en-tête (TH) des compétences
+            sortedCompetences.forEach(comp => {
+                const th = document.createElement('th');
+                th.textContent = formatCompetenceName(comp);
+                tableHeaderRow.appendChild(th);
+            });
+            
+            // 3. Générer le corps du tableau (TBody)
+            data.forEach(persona => {
+                const tr = document.createElement('tr');
+                
+                // Colonnes fixes
+                tr.innerHTML = `
+                    <td>${persona.nom_complet}</td>
+                    <td>${persona.profession}</td>
+                    <td>${persona.seniorite}</td>
+                `;
+                
+                // Colonnes de compétences
+                sortedCompetences.forEach(comp => {
+                    const score = persona.competences[comp] || 0;
+                    const td = document.createElement('td');
+                    td.classList.add('competence-score', `score-${score}`);
+                    td.textContent = score > 0 ? score : '-';
+                    tr.appendChild(td);
+                });
+                
+                tableBody.appendChild(tr);
+            });
+            
+            // 4. Générer le pied de tableau (TFoot) avec les statistiques
+
+            // Ligne 1: Score Total
+            let trTotal = document.createElement('tr');
+            trTotal.innerHTML = `<th>Score total</th><td colspan="2"></td>`; // Colonnes fixes
+            sortedCompetences.forEach(comp => {
+                const td = document.createElement('td');
+                td.textContent = competenceStats[comp].totalScore;
+                td.classList.add('competence-score', 'score-5');
+                trTotal.appendChild(td);
+            });
+            tableFooter.appendChild(trTotal);
+            
+            // Ligne 2: Nombre d'Experts (Personnes possédant la compétence)
+            let trExperts = document.createElement('tr');
+            trExperts.innerHTML = `<th>Nombre d'Experts</th><td colspan="2"></td>`;
+            sortedCompetences.forEach(comp => {
+                const td = document.createElement('td');
+                td.textContent = competenceStats[comp].count;
+                td.classList.add('competence-score', 'score-5');
+                trExperts.appendChild(td);
+            });
+            tableFooter.appendChild(trExperts);
+
+            // Ligne 3: Expertise Moyenne
+            let trAverage = document.createElement('tr');
+            trAverage.classList.add('average-row');
+            trAverage.innerHTML = `<th>Expertise moyenne</th><td colspan="2"></td>`;
+            sortedCompetences.forEach(comp => {
+                const avg = competenceStats[comp].count > 0 
+                    ? (competenceStats[comp].totalScore / competenceStats[comp].count) 
+                    : 0;
+                
+                const td = document.createElement('td');
+                td.textContent = avg.toFixed(2);
+                // Utiliser une classe de score pour la couleur d'arrière-plan ou de texte si souhaité, mais ici je garde la couleur MD
+                trAverage.appendChild(td);
+            });
+            tableFooter.appendChild(trAverage);
+
+            // 5. Implémenter l'effet de Hover sur les colonnes
+            const table = document.getElementById('personaTable');
+            const allCells = table.querySelectorAll('th, td');
+            const numCols = tableHeaderRow.cells.length;
+
+            allCells.forEach(cell => {
+                cell.addEventListener('mouseover', function() {
+                    const colIndex = this.cellIndex;
+                    
+                    // Appliquer la classe 'hover-col' à toutes les cellules de cette colonne
+                    for (let i = 0; i < table.rows.length; i++) {
+                        // S'assurer que la ligne a bien la cellule à cet index
+                        if (table.rows[i].cells[colIndex]) {
+                            table.rows[i].cells[colIndex].classList.add('hover-col');
+                        }
+                    }
+                });
+
+                cell.addEventListener('mouseout', function() {
+                    const colIndex = this.cellIndex;
+                    
+                    // Retirer la classe 'hover-col' de toutes les cellules de cette colonne
+                    for (let i = 0; i < table.rows.length; i++) {
+                        if (table.rows[i].cells[colIndex]) {
+                            table.rows[i].cells[colIndex].classList.remove('hover-col');
+                        }
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', buildTable);
+    </script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrice d'Expertise des Personas (Colonnes Figées & Alertes)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&display=swap" rel="stylesheet">
+    <style>
+        /* Couleurs et esthétique Material Design */
+        :root {
+            --md-primary-color: #3F51B5; /* Indigo */
+            --md-secondary-color: #212121; /* Gris foncé */
+            --md-surface-color: #FFFFFF;
+            --md-divider-color: #E0E0E0;
+            --md-hover-row-color: #E8EAF6; /* Indigo très clair (Ligne) */
+            --md-hover-col-color: #C5CAE9; /* Indigo clair (Colonne) */
+            --md-frozen-bg-color: #FAFAFA; /* Arrière-plan pour les colonnes figées */
+            --md-shadow-elevation-1: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F5F5F5;
+            padding: 20px;
+            color: var(--md-secondary-color);
+        }
+
+        h1 {
+            color: var(--md-primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Conteneur principal du tableau */
+        .table-container {
+            max-width: 95%;
+            margin: 0 auto;
+            box-shadow: var(--md-shadow-elevation-1);
+            background-color: var(--md-surface-color);
+            border-radius: 4px;
+        }
+
+        /* Conteneur pour le défilement */
+        .scroll-wrapper {
+            overflow-x: auto;
+        }
+
+        .persona-table {
+            width: auto; 
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+
+        /* Style des cellules communes */
+        .persona-table th, 
+        .persona-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--md-divider-color);
+            text-align: left;
+            white-space: nowrap; /* Pas d'ellipsis */
+            overflow: visible;
+            text-overflow: clip; 
+        }
+        
+        /* En-tête */
+        .persona-table thead th {
+            background-color: var(--md-primary-color);
+            color: var(--md-surface-color);
+            font-weight: 500;
+        }
+
+        /* Colonnes Figées (Frozen) */
+        .frozen {
+            position: sticky;
+            z-index: 10;
+            background-color: var(--md-frozen-bg-color);
+        }
+        .persona-table th.frozen {
+            z-index: 11; 
+            background-color: var(--md-primary-color); 
+        }
+        .frozen-col-0 { left: 0; }
+        .frozen-col-1 { left: 150px; } 
+        .frozen-col-2 { left: 300px; } 
+
+        /* Ombre pour marquer les colonnes figées */
+        .scroll-wrapper.is-scrolling th.frozen,
+        .scroll-wrapper.is-scrolling td.frozen {
+            box-shadow: 2px 0 3px -1px rgba(0, 0, 0, 0.2);
+        }
+        .scroll-wrapper.is-scrolling th.frozen {
+            box-shadow: 2px 0 3px -1px rgba(0, 0, 0, 0.4);
+        }
+
+
+        /* --- Effets de Survol (Hover) --- */
+        .persona-table tbody tr:hover {
+            background-color: var(--md-hover-row-color);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .persona-table tbody tr:hover .frozen {
+            background-color: var(--md-hover-row-color);
+        }
+        .hover-col {
+            background-color: var(--md-hover-col-color) !important; 
+            transition: background-color 0.3s ease;
+        }
+        .hover-col.frozen {
+            background-color: var(--md-hover-col-color) !important; 
+        }
+        
+        /* --- Pied de tableau (Statistiques) --- */
+        .persona-table tfoot th,
+        .persona-table tfoot td {
+            border-top: 2px solid #546E7A;
+            font-weight: 500;
+        }
+
+        .persona-table tfoot th {
+            background-color: #78909C; 
+            color: var(--md-surface-color);
+        }
+        .persona-table tfoot td {
+            background-color: #CFD8DC; 
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .persona-table tfoot tr.average-row td {
+            font-weight: bold;
+            color: var(--md-primary-color);
+        }
+
+        /* --- NOUVELLES CLASSES D'ALERTE --- */
+        
+        /* Niveau 1 : Avertissement (Orange) */
+        .persona-table tfoot td.alert-warning {
+            background-color: #FFB74D !important; /* Orange Material Light */
+            color: #333333;
+        }
+
+        /* Niveau 2 : Critique (Rouge) */
+        .persona-table tfoot td.alert-critical {
+            background-color: #E57373 !important; /* Rouge Material Light */
+            color: white;
+            font-weight: 700 !important;
+        }
+        
+        /* Scores des compétences */
+        .competence-score {
+            font-weight: bold;
+            text-align: center;
+        }
+        .score-5 { color: #4CAF50; } 
+        .score-0 { color: #BDBDBD; } 
+
+    </style>
+</head>
+<body>
+
+    <h1>Matrice d'Expertise des Personas ❄️</h1>
+    <p style="text-align: center; font-size: 0.9em; margin-bottom: 20px;">
+        <span style="color: #E57373;">Rouge : Expertise moyenne &lt; 3</span> | 
+        <span style="color: #FFB74D;">Orange : Expertise moyenne &lt; 3.75 ou Nombre d'Experts &lt; 3</span>
+    </p>
+
+    <div class="table-container">
+        <div class="scroll-wrapper" id="scrollWrapper">
+            <table class="persona-table" id="personaTable">
+                <thead>
+                    <tr id="tableHeaderRow">
+                        <th class="frozen frozen-col-0">Nom Complet</th>
+                        <th class="frozen frozen-col-1">Profession</th>
+                        <th class="frozen frozen-col-2">Séniorité</th>
+                        </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+                <tfoot id="tableFooter">
+                    </tfoot>
+            </table>
+        </div>
+    </div>
+    
+    <div id="error-message" style="color: red; text-align: center; margin-top: 20px; font-weight: bold; display: none;">
+        Erreur: Impossible de charger les données. Assurez-vous que le fichier "personas.json" existe dans le même répertoire.
+    </div>
+
+    <script>
+        const API_URL = 'personas.json';
+        const scrollWrapper = document.getElementById('scrollWrapper');
+        const tableBody = document.getElementById('tableBody');
+        const tableHeaderRow = document.getElementById('tableHeaderRow');
+        const tableFooter = document.getElementById('tableFooter');
+        const errorMessage = document.getElementById('error-message');
+        
+        const numFixedCols = 3; 
+
+        // --- Seuils d'alerte ---
+        const THRESHOLD_EXPERTS = 3; // Mettre en orange si Nombre d'Experts < 3
+        const THRESHOLD_AVG_WARNING = 3.75; // Mettre en orange si Moyenne < 3.75
+        const THRESHOLD_AVG_CRITICAL = 3.00; // Mettre en rouge si Moyenne < 3.00
+        // -------------------------
+
+        function formatCompetenceName(competenceKey) {
+            let formatted = competenceKey.replace(/_/g, ' ');
+            return formatted.replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function applyFrozenStyle(cell, colIndex) {
+            if (colIndex < numFixedCols) {
+                cell.classList.add('frozen', `frozen-col-${colIndex}`);
+            }
+        }
+
+        /**
+         * Applique les classes d'alerte aux cellules de statistiques.
+         * @param {HTMLElement} tdCell La cellule <td> des statistiques.
+         * @param {string} type Le type de statistique ('experts' ou 'average').
+         * @param {number} value La valeur numérique à comparer aux seuils.
+         * @param {number} countExperts Le nombre d'experts (nécessaire pour la ligne moyenne si on veut combiner les alertes).
+         */
+        function applyAlertClasses(tdCell, type, value, countExperts = 0) {
+            tdCell.classList.remove('alert-warning', 'alert-critical'); // Réinitialisation
+
+            if (type === 'experts') {
+                // Règle: Mettre en orange si Nombre d'Experts < 3
+                if (value < THRESHOLD_EXPERTS) {
+                    tdCell.classList.add('alert-warning');
+                }
+            } else if (type === 'average') {
+                // Règle 1: Mettre en rouge si Moyenne < 3
+                if (value < THRESHOLD_AVG_CRITICAL) {
+                    tdCell.classList.add('alert-critical');
+                } 
+                // Règle 2: Mettre en orange si Moyenne < 3.75 (mais pas déjà rouge)
+                else if (value < THRESHOLD_AVG_WARNING) {
+                    tdCell.classList.add('alert-warning');
+                }
+            }
+        }
+
+        async function buildTable() {
+            let data;
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                data = await response.json();
+            } catch (error) {
+                console.error("Erreur de chargement du JSON:", error);
+                errorMessage.textContent = `Erreur de chargement des données. Veuillez vérifier que le fichier 'personas.json' est présent et correct. Détail: ${error.message}`;
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // 1. Déterminer toutes les compétences et calculer les statistiques
+            const competenceStats = {};
+            const allCompetences = new Set();
+
+            data.forEach(persona => {
+                Object.keys(persona.competences).forEach(comp => {
+                    allCompetences.add(comp);
+                    const score = persona.competences[comp] || 0;
+                    
+                    if (!competenceStats[comp]) {
+                        competenceStats[comp] = { totalScore: 0, countExperts: 0 };
+                    }
+                    
+                    if (score > 0) {
+                        competenceStats[comp].totalScore += score;
+                        competenceStats[comp].countExperts += 1;
+                    }
+                });
+            });
+
+            const sortedCompetences = Array.from(allCompetences).sort();
+            
+            // 2. Générer l'en-tête (TH) des compétences
+            sortedCompetences.forEach(comp => {
+                const th = document.createElement('th');
+                th.textContent = formatCompetenceName(comp);
+                tableHeaderRow.appendChild(th);
+            });
+            
+            // 3. Générer le corps du tableau (TBody)
+            data.forEach(persona => {
+                const tr = document.createElement('tr');
+                
+                // Colonnes fixes
+                let fixedData = [persona.nom_complet, persona.profession, persona.seniorite];
+                fixedData.forEach((value, index) => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    applyFrozenStyle(td, index);
+                    tr.appendChild(td);
+                });
+                
+                // Colonnes de compétences
+                sortedCompetences.forEach(comp => {
+                    const score = persona.competences[comp] || 0;
+                    const td = document.createElement('td');
+                    td.classList.add('competence-score', `score-${score}`);
+                    td.textContent = score > 0 ? score : '-';
+                    tr.appendChild(td);
+                });
+                
+                tableBody.appendChild(tr);
+            });
+            
+            // 4. Générer le pied de tableau (TFoot) avec les statistiques et les alertes
+
+            const emptyFixedCols = `<td colspan="${numFixedCols - 1}" class="frozen frozen-col-1" style="left: 150px; width: 300px; z-index: 9;"></td>`;
+            const emptyFixedColsAverage = `<td colspan="${numFixedCols - 1}" class="frozen frozen-col-1" style="left: 150px; width: 300px; z-index: 9; background-color: #CFD8DC; border-top: 2px solid #90A4AE;"></td>`;
+
+
+            // Ligne 1: Score Total
+            let trTotal = document.createElement('tr');
+            trTotal.innerHTML = `<th class="frozen frozen-col-0">Score total</th>${emptyFixedCols}`;
+            sortedCompetences.forEach(comp => {
+                const td = document.createElement('td');
+                td.textContent = competenceStats[comp].totalScore;
+                td.classList.add('competence-score');
+                trTotal.appendChild(td);
+            });
+            tableFooter.appendChild(trTotal);
+            
+            // Ligne 2: Experts (Nombre de personnes avec score > 0)
+            let trExperts = document.createElement('tr');
+            trExperts.innerHTML = `<th class="frozen frozen-col-0">Experts</th>${emptyFixedCols}`;
+            sortedCompetences.forEach(comp => {
+                const td = document.createElement('td');
+                const count = competenceStats[comp].countExperts;
+                td.textContent = count;
+                td.classList.add('competence-score');
+                applyAlertClasses(td, 'experts', count); // Application de la règle des Experts
+                trExperts.appendChild(td);
+            });
+            tableFooter.appendChild(trExperts);
+
+            // Ligne 3: Expertise Moyenne
+            let trAverage = document.createElement('tr');
+            trAverage.classList.add('average-row');
+            trAverage.innerHTML = `<th class="frozen frozen-col-0">Expertise moyenne</th>${emptyFixedColsAverage}`;
+            sortedCompetences.forEach(comp => {
+                const stats = competenceStats[comp];
+                const avg = stats.countExperts > 0 
+                    ? (stats.totalScore / stats.countExperts) 
+                    : 0;
+                
+                const td = document.createElement('td');
+                td.textContent = avg.toFixed(2);
+                
+                // Application de la règle du score moyen
+                if (stats.countExperts > 0) { // On n'applique les règles que si des experts existent
+                    applyAlertClasses(td, 'average', avg);
+                } else if (stats.totalScore > 0) {
+                     // Cas où le total score > 0 mais countExperts = 0 (ne devrait pas arriver avec la logique)
+                }
+
+                trAverage.appendChild(td);
+            });
+            tableFooter.appendChild(trAverage);
+
+            // 5. Implémenter l'effet de Hover et l'ombre de défilement
+            
+            // Ombre de défilement
+            scrollWrapper.addEventListener('scroll', () => {
+                if (scrollWrapper.scrollLeft > 0) {
+                    scrollWrapper.classList.add('is-scrolling');
+                } else {
+                    scrollWrapper.classList.remove('is-scrolling');
+                }
+            });
+
+            // Gestion du hover de colonne
+            const table = document.getElementById('personaTable');
+            const allCells = table.querySelectorAll('th, td');
+            
+            allCells.forEach(cell => {
+                if (cell.hasAttribute('colspan')) {
+                    return;
+                }
+                
+                cell.addEventListener('mouseover', function() {
+                    let colIndex = this.cellIndex;
+                    let isTFootCell = this.closest('tfoot');
+
+                    if (isTFootCell && colIndex >= 1) {
+                         colIndex += (numFixedCols - 1);
+                    } else if (isTFootCell && colIndex === 0) {
+                         return;
+                    }
+
+                    for (let i = 0; i < table.rows.length; i++) {
+                        const row = table.rows[i];
+                        
+                        if (row.cells[colIndex]) {
+                            row.cells[colIndex].classList.add('hover-col');
+                        }
+                        
+                        // Traiter TFOOT
+                        if (row.closest('tfoot')) {
+                            const tfootCompIndex = colIndex - numFixedCols + 1;
+                            if (tfootCompIndex >= 1 && row.cells[tfootCompIndex]) {
+                                row.cells[tfootCompIndex].classList.add('hover-col');
+                            }
+                            // Pour les colonnes figées (index 0, 1, 2)
+                            if (colIndex === 0 && row.cells[0]) {
+                                row.cells[0].classList.add('hover-col');
+                            }
+                            if (colIndex > 0 && colIndex < numFixedCols && row.cells[1]) {
+                                row.cells[1].classList.add('hover-col');
+                            }
+                        }
+                    }
+                });
+
+                cell.addEventListener('mouseout', function() {
+                    let colIndex = this.cellIndex;
+                    let isTFootCell = this.closest('tfoot');
+
+                    if (isTFootCell && colIndex >= 1) {
+                         colIndex += (numFixedCols - 1);
+                    } else if (isTFootCell && colIndex === 0) {
+                         return;
+                    }
+                    
+                    for (let i = 0; i < table.rows.length; i++) {
+                        const row = table.rows[i];
+                        
+                        if (row.cells[colIndex]) {
+                            row.cells[colIndex].classList.remove('hover-col');
+                        }
+                        
+                        if (row.closest('tfoot')) {
+                            const tfootCompIndex = colIndex - numFixedCols + 1;
+                            if (tfootCompIndex >= 1 && row.cells[tfootCompIndex]) {
+                                row.cells[tfootCompIndex].classList.remove('hover-col');
+                            }
+                            if (colIndex === 0 && row.cells[0]) {
+                                row.cells[0].classList.remove('hover-col');
+                            }
+                            if (colIndex > 0 && colIndex < numFixedCols && row.cells[1]) {
+                                row.cells[1].classList.remove('hover-col');
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', buildTable);
+    </script>
+</body>
+</html>
