@@ -17,7 +17,7 @@ Participants : Virgile, Vladimir, Remi, Vincent
 //- [Contributing](#contributing)
 //- [License](#license)
 //- [Contact](#contact)
-//- [Acknowledgements](#acknowledgements)
+// - [Acknowledgements](#acknowledgements)
 
 ## About
 
