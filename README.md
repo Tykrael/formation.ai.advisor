@@ -143,3 +143,29 @@ Screencaps + files for the demo
 > </contraintes_fiches_de_poste>
 > 
 > </user_request>
+
+
+> [!NOTE]
+> <user_request>
+>     <objectif>Réaliser une analyse comparative stratégique des coûts entre l'acquisition externe d'expertise (Recrutement) et le développement interne (Formation) pour combler les faiblesses identifiées.</> objectif>
+> 
+>     <role_a_endosser>Consultant ou Recruteur expérimenté en stratégie RH et budgétisation.</role_a_endosser>
+> 
+>     <contexte_entree>
+>         <indicateurs_faiblesses>Utiliser les statistiques des compétences listées avec un périmètre d'expertise réduit (≤ 3 personnes) et celles avec une expertise moyenne faible (&lt; 3.75).</> indicateurs_faiblesses>
+>         <profils_cibles>Se baser sur les deux fiches de poste seniors/experts définies précédemment (Expert IT et Conseiller Opérations).</profils_cibles>
+>     </contexte_entree>
+> 
+>     <analyse_demandee>
+>         <comparaison_couts>
+>             <methode nom="Acquisition Externe (Recrutement)">Estimer les coûts non salariaux associés au recrutement des profils cibles (Frais d'agence/sourcing, prime de signature/onboarding, perte de > productivité au démarrage).</methode>
+>             <methode nom="Développement Interne (Formation)">Estimer les coûts par collaborateur pour atteindre l'objectif de score (&gt; 4.0), incluant les frais de formation externe (certifications), le > coût du temps homme (absence du poste) et le mentoring interne.</methode>
+>         </comparaison_couts>
+>         <recommandation_strategique>Proposer une stratégie Hybride (mixte recrutement/formation) pour sécuriser rapidement les faiblesses critiques (sécurité/nombre d'experts faibles) et développer > durablement les faiblesses d'expertise moyenne.</recommandation_strategique>
+>     </analyse_demandee>
+> 
+>     <format_sortie>
+>         <section nom="Analyse Comparative Détaillée" type="tableau">Présenter clairement les estimations de coûts moyens et les avantages/inconvénients de chaque option.</section>
+>         <section nom="Recommandation Stratégique Finale" type="texte">Justifier l'approche hybride et estimer son coût global (hors salaires bruts).</section>
+>     </format_sortie>
+> </user_request>
