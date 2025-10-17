@@ -1,0 +1,40 @@
+# Project Name
+
+Projet pour la formation AI Advisor
+Participants : Virgile, Vladimir, Remi, Vincent
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://example.com) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+
+## Table of Contents
+
+- [About](#about)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+//- [Configuration](#configuration)
+//- [Usage](#usage)
+//- [Development](#development)
+//- [Contributing](#contributing)
+//- [License](#license)
+//- [Contact](#contact)
+//- [Acknowledgements](#acknowledgements)
+
+## About
+
+Screencaps + files for the demo
+
+## Features
+
+-personnas.json : liste de collaborateur de la société cible
+-index.html + index.v2.html : render de la matrice de compéténce generée par LLM
+-recrutement vs formation.pdf : analyse comparative des couts des differentes solutions recrutement vs formation
+
+## Requirements
+
+- OS: cross-platform (Windows / macOS / Linux)
+- Runtime: e.g., Node.js >= 14, Python 3.8+, etc.
+- Other prerequisites (database, services)
+
+## Installation
+
+1. Clone the repository:
